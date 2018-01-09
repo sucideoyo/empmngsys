@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class EmployeeController {
@@ -13,9 +15,9 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @RequestMapping("/employees")
-    public List<Employee> getSubordinates(){
-        return employeeService.getSubordinates();
+    @RequestMapping("/employees/{parentId}/subordinates")
+    public List<Employee> getSubordinates(@PathVariable String parentId){
+        return employeeService.getSubordinates(parentId);
     }
 
     @RequestMapping("/employees/{id}")
@@ -24,7 +26,8 @@ public class EmployeeController {
     }
 
     @RequestMapping(method = RequestMethod.POST , value = "/employees")
-    public void addEmployee(@RequestBody Employee emp){
+    public void addEmployee(@RequestBody HashMap<String, String> payload){
+        Employee emp = new Employee(payload.get("id") , payload.get("name") , payload.get("designation") , payload.get("parentId"));
         employeeService.addEmployee(emp);
     }
 

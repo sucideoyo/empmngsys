@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Queue;
 
 @Service
 public class EmployeeService {
@@ -13,9 +14,9 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public List<Employee> getSubordinates(){
+    public List<Employee> getSubordinates(String parentId){
         List<Employee> employees = new ArrayList<>();
-        for( Employee emp:employeeRepository.findAll()){
+        for( Employee emp:employeeRepository.findByParentId(parentId)){
             employees.add(emp);
         }
         return employees;
