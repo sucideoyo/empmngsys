@@ -1,7 +1,13 @@
 package com.oyorooms.intern.bootstrap.empmngsys.employee;
 
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Employee {
 
+    @Id
     private String id;
     private String name;
     private String designation;

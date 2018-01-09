@@ -1,5 +1,6 @@
 package com.oyorooms.intern.bootstrap.empmngsys.employee;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,46 +10,31 @@ import java.util.List;
 @Service
 public class EmployeeService {
 
-    private List<Employee> employees = new ArrayList<Employee>(Arrays.asList(
-            new Employee("1" , "Shivam" , "intern"),
-            new Employee("2" , "Sahil" , "SDE"),
-            new Employee("3" , "Sidharth" , "Senior Intern")
-    ));
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     public List<Employee> getSubordinates(){
+        List<Employee> employees = new ArrayList<>();
+        for( Employee emp:employeeRepository.findAll()){
+            employees.add(emp);
+        }
         return employees;
     }
 
     public Employee getEmployee(String id){
-        for( Employee emp: employees){
-            if(emp.getId().equals(id)) {
-                return emp;
-            }
-        }
-        return null;
+        return employeeRepository.findOne(id);
     }
 
     public void removeEmployee(String id){
-        for(int i = 0 ; i < employees.size() ; i++){
-            if(employees.get(i).getId().equals(id)){
-                employees.remove(i);
-                return;
-            }
-        }
+        employeeRepository.delete(id);
     }
 
     public void updateEmployee(String id , Employee employee){
-        for( int i = 0 ; i < employees.size() ; i++){
-            Employee emp = employees.get(i);
-            if(emp.getId().equals(id)) {
-                employees.set(i , employee);
-                return;
-            }
-        }
+        employeeRepository.save(employee);
     }
 
     public void addEmployee(Employee emp){
-        employees.add(emp);
+        employeeRepository.save(emp);
     }
 
 }
